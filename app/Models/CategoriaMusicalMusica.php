@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CategoriaMusicalMusica extends Model
 {
     use HasFactory;
+    protected $fillable = ['id_musica', 'id_categoria'];
+
 }

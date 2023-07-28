@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CifrasPasta extends Model
 {
     use HasFactory;
+    protected $fillable = ['id_pasta', 'id_cifra'];
+
+
+
+
 }

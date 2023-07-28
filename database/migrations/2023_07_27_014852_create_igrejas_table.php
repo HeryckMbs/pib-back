@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('telefone');
-            // $table->unsignedBigInteger('id_endereco')-
-            // $table->unsignedBigInteger('id_pastor');
             $table->foreignId('id_pastor')->references('id')->on('membros');
             $table->timestamps();
         });

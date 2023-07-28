@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Igreja extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nome',
+        'telefone',
+        'id_pastor',
+    ];
+
 }

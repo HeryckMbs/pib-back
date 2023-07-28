@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mensagem extends Model
 {
     use HasFactory;
+    protected $fillable = ['id_culto', 'id_membro', 'titulo', 'resumo', 'linkYoutube'];
+
+
 }

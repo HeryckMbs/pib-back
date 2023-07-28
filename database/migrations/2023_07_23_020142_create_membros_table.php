@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('membros', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('email');
             $table->string('url_photo')->nullable();
-            $table->timestamp('dt_aniversario');
+            $table->timestamp('dt_aniversario')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categoria_musical_musicas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_musica')->references('id')->on('musicas');
-            $table->foreignId('id_caregoria')->references('id')->on('categoria_musicals');
+            $table->foreignId('id_categoria')->references('id')->on('categoria_musicals');
             $table->timestamps();
         });
     }

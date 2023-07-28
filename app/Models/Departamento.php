@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Departamento extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nome',
+        'descricao',
+        'objetivo',
+        'backgroundUrl',
+        'louvor',
+        'id_lider',
+    ];
 }

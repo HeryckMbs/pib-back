@@ -14,4 +14,8 @@ class Igreja extends Model
         'id_pastor',
     ];
 
+    public function members(){
+        return $this->hasMany(Membro::class,'id_igreja');
+    }
+
 }

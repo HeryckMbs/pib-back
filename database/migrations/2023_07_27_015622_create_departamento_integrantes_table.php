@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_departamento')->references('id')->on('departamentos');
             $table->foreignId('id_membro')->references('id')->on('membros');
-            $table->foreignId('id_funcao')->references('id')->on('departamento_funcaos');
+            $table->foreignId('id_funcao')->nullable()->references('id')->on('departamento_funcaos');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Membro;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,8 @@ class UserController extends Controller
 {
     public function mountUser(Request $request)
     {
+
+
         $validator = Validator::make($request->all(), [
             'email' => 'required',
             'password' => 'required',
@@ -71,7 +74,39 @@ class UserController extends Controller
 
         }
 
-        return response()->json(['user' => $user,'permissions'=> $originalPermissions], 200);
+        return response()->json(['success' => true,'user' => $user,'permissions'=> $originalPermissions], 200);
+    }
+
+    public function register(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+            'name' => 'required',
+        ], [
+            'email.required' => 'Email obrigatório',
+            'password.required' => 'Senha obrigatória',
+            'name.required' => 'Nome obrigatório',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->getMessageBag()], 403);
+        }
+        try{
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $user =  User::create($input);
+            $user->assignRole('root');
+            Membro::create([
+                'nome' => $user->name,
+                'url_photo' => null,
+                'dt_aniversario' => null,
+                'user_id' => $user->id,
+                'id_igreja' => $request->id_igreja
+            ]);
+            return response()->json(['success' => true,'message' => 'Sucesso']);
+        }catch(\Exception $e){
+            return response()->json(['success' => false,'message' => $e->getMessage(), 'data' => $request]);
+        }
     }
 
         // ignore: use_build_context_synchronously

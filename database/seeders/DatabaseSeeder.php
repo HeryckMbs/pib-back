@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Departamento;
+use App\Models\DepartamentoFuncao;
+use App\Models\DepartamentoIntegrante;
+use App\Models\Igreja;
 use App\Models\Membro;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -58,39 +61,53 @@ class DatabaseSeeder extends Seeder
             'can_delete',
         ];
 
-        foreach($entities as $entity){
-            foreach($permissions as $permission){
+        foreach ($entities as $entity) {
+            foreach ($permissions as $permission) {
                 $permissionsCreated[$entity] = Permission::create(['name' => $entity . '_' . $permission]);
             }
         }
 
         $roles = [
-            'root','ministro','presidente_departamento'
+            'root',
+            'ministro',
+            'presidente_departamento'
         ];
 
-        foreach($roles as $role){
+        foreach ($roles as $role) {
             $role = Role::create(['name' => $role]);
             $role->syncPermissions($permissionsCreated);
         }
 
+        
 
 
 
-    $user  =  \App\Models\User::create([
+        $user = \App\Models\User::create([
             'name' => 'heryck',
             'email' => 'heryckmota@gmail.com',
             'password' => bcrypt(123456)
         ]);
-
-        Membro::create([
+        $user->assignRole('root');
+        $igreja = Igreja::create([
+            'nome' => $user->name,
+            'telefone' => '80347023',
+        ]);
+        $membro = Membro::create([
             'nome' => 'heryck',
             'url_photo' => null,
             'dt_aniversario' => Carbon::now(),
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'id_igreja' => $igreja->id
         ]);
 
-        $user->assignRole('root');
+        $igreja->id_pastor = $membro->id;
+        $igreja->save();
 
-        // Departamento::create([]);
+
+        $Departamento = Departamento::create(['nome' => '', 'descricao' => '', 'objetivo' => '', 'id_lider' => $membro->id,'id_igreja' => $igreja->id]);
+        $departamentoFuncao = DepartamentoFuncao::create(['id_departamento' => $Departamento->id, 'nome' => 'Presidente', 'descricao' => 'Comandante']);
+        $DepartamentoIntegrantes = DepartamentoIntegrante::create(['id_departamento' => $Departamento->id, 'id_membro' => $membro->id, 'id_funcao' => $departamentoFuncao->id]);
+
+
     }
 }

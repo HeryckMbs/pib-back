@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('nome');
             $table->string('descricao');
             $table->string('objetivo');
-            $table->string('backgroundUrl');
+            $table->string('backgroundUrl')->nullable();
             $table->boolean('louvor')->default(false);
-            $table->foreignId('id_lider')->references('id')->on('membros');
+            $table->foreignId('id_lider')->references('id')->on('membros')->nullable();
+            $table->foreignId('id_igreja')->references('id')->on('igrejas')->nullable();
 
             $table->timestamps();
         });

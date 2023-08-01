@@ -17,10 +17,14 @@ class Membro extends Model
     use HasFactory;
 
     public function departments(){
-        return $this->belongsToMany(Departamento::class,'departamento_integrantes','id_membro','id');
+        return $this->belongsToMany(Departamento::class,'departamento_integrantes','id_membro','id_departamento');
     }
 
     public function functions(){
         return $this->belongsToMany(DepartamentoFuncao::class, 'departamento_integrantes','id_membro','id_funcao','id','id');
+    }
+
+    public function participations(){
+        return $this->hasMany(DepartamentoIntegrante::class,'id_membro','id');
     }
 }

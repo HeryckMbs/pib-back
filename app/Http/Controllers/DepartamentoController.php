@@ -93,14 +93,38 @@ class DepartamentoController extends Controller
         }
     }
 
-    public function getMembersWithoutDeparment($id_igreja)
+    public function getMembersWithoutDeparment($id_igreja, $id_departamento)
     {
         try {
-            $membersWithDepartment = DB::table('departamento_integrantes')->groupBy('id_membro')->pluck('id_membro');
-            $membersWithoutDepartment = Membro::whereNotIn('id', $membersWithDepartment)->get();
+            $members = DepartamentoIntegrante::where('id_departamento','=',$id_departamento)->pluck('id_membro');
+            $membersWithoutDepartment = Membro::where([['id_igreja', '=', $id_igreja],])->whereNotIn('id',$members)->get();
+
             return response()->json(['success' => true, 'members' => $membersWithoutDepartment]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Não foi possível completar a requisição', 'errors' => $e->getMessage()], 400);
+        }
+    }
+
+    public function updateDepartamento(Request $request)
+    {
+        $validator = Validator::make($request->departamento, [
+            'id' => 'required',
+            'nome' => 'required',
+        ], ['id.required' => 'Requisição inválida', 'nome.required' => 'O nome do departamento é obrigatório!']);
+
+        if ($validator->fails()) {
+            return response()->json(['erros' => json_encode($validator->messages())], 400);
+        }
+        try {
+            $departamento = Departamento::findOrFail($request->departamento['id']);
+
+            foreach ($request->departamento as $chave => $valor) {
+                $departamento->$chave = $valor;
+            }
+            $departamento->save();
+            return response()->json(['success' => true, 'message' => 'Departamento atualizado com sucesso!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => true, 'message' => 'Não foi possível concluir a operação!'], 500);
         }
     }
 }

@@ -68,4 +68,34 @@ class IgrejaController extends Controller
             return response()->json(['success' => false, 'message' => 'Não foi possível completar a requisição', 'errors' => $e->getMessage()], 400);
         }
     }
+
+    public function updateChurch(Request $request,$id_igreja){
+        $validator = Validator::make($request->igreja, [
+            'nome' => 'required',
+            'telefone' => 'required',
+            'id' => 'required'
+        ], [
+            'nome.required' => 'O campo nome é obrigatório',
+            'telefone.required' => 'O campo telefone é obrigatório',
+            'id.required' => 'Requisição inválida'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, $validator->messages()], 400);
+        }
+        try {
+            DB::beginTransaction();
+            $igreja = Igreja::findOrFail($request->igreja['id']);
+            foreach($request->igreja as $chave => $valor){
+                $igreja->$chave = $valor;
+            }
+            $igreja->save();
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Igreja atualizada com sucesso!'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Não foi possível criar a igreja!', 'errors' => $e->getMessage()], 400);
+        }
+
+    }
 }

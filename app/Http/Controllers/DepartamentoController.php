@@ -15,8 +15,7 @@ class DepartamentoController extends Controller
     public function getDepartmentsOfChurch($id_igreja)
     {
         try {
-            $departmens = Departamento::where('id_igreja', $id_igreja)->get();
-
+            $departmens = Departamento::where('id_igreja', $id_igreja)->get(); 
             return response()->json(['success' => true, 'departmens' => $departmens], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'errors' => $e->getMessage()], 400);

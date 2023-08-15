@@ -14,6 +14,7 @@ class Culto extends Model
         'dt_fim',
         'descricao',
         'coordenadas',
+        'id_igreja'
     ];
 
 }

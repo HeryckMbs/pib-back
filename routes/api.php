@@ -55,6 +55,7 @@ Route::group([
 
     Route::group(['prefix' => 'culto'],function(){
         Route::post('/store',[CultoController::class, 'store']);
+        Route::get('/{id_igreja}',[CultoController::class, 'getCulto']);
     });
 
 });

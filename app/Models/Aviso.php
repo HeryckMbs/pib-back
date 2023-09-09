@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Yajra\Auditable\AuditableTrait;
 
-class Pasta extends Model
+class Aviso extends Model
 {
-    use HasFactory;
+    use HasFactory,AuditableTrait;
 }

@@ -8,10 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Cifra extends Model
 {
     use HasFactory;
-    protected $fillable = ['nome', 'tom', 'id_musica', 'urlNuvem'];
-
-
-
-
 }
-

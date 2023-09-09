@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Integrante;
 use App\Models\Membro;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -92,19 +94,15 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->getMessageBag()], 403);
         }
         try{
+            DB::beginTransaction();
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
             $user =  User::create($input);
-            $user->assignRole('root');
-            Membro::create([
-                'nome' => $user->name,
-                'url_photo' => null,
-                'dt_aniversario' => null,
-                'user_id' => $user->id,
-                'id_igreja' => $request->id_igreja
-            ]);
+            Integrante::create(['nome' => $input['name'],'user_id' =>$user->id,]);
+            DB::commit();
             return response()->json(['success' => true,'message' => 'Sucesso']);
         }catch(\Exception $e){
+            DB::rollBack();
             return response()->json(['success' => false,'message' => $e->getMessage(), 'data' => $request]);
         }
     }

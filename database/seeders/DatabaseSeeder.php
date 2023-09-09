@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
 
 
@@ -32,37 +32,37 @@ class DatabaseSeeder extends Seeder
         //     'dt_aniversario' => Carbon::now(),
         //     'user_id' => 3,
         // ]);
-        $json = [];
+        // $json = [];
 
-        for($a = 1; $a<=581;$a++ ){
-            $ch = curl_init();
+        // for($a = 1; $a<=581;$a++ ){
+        //     $ch = curl_init();
 
-            curl_setopt($ch, CURLOPT_URL, "https://cantorcristaobatista.com.br/CantorCristao/hino/show/$a");
+        //     curl_setopt($ch, CURLOPT_URL, "https://cantorcristaobatista.com.br/CantorCristao/hino/show/$a");
 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-            $response = mb_convert_encoding( curl_exec($ch), 'UTF-8' );
+        //     $response = mb_convert_encoding( curl_exec($ch), 'UTF-8' );
 
-            $regex = '/<div id="letra">(.+?)<\/div>/s';
-            if (preg_match($regex, $response, $matches)) {
-                $titles = '';
-                if(preg_match( '/<div class="body">.*?<h1>(.*?)<\/h1>/s',$response, $title)){
-                    $titles = trim(preg_replace('/\s+/', ' ', $title[1]));
-                }
+        //     $regex = '/<div id="letra">(.+?)<\/div>/s';
+        //     if (preg_match($regex, $response, $matches)) {
+        //         $titles = '';
+        //         if(preg_match( '/<div class="body">.*?<h1>(.*?)<\/h1>/s',$response, $title)){
+        //             $titles = trim(preg_replace('/\s+/', ' ', $title[1]));
+        //         }
 
-                $json[$a]= ['title' => str_replace($titles,'"',''), 'hino' => str_replace( $matches[1],'"','') ];
-                dump("$titles $a/581");
-            } else {
-                echo "Div não encontrada ou conteúdo vazio.";
-            }
-            curl_close($ch);
-        }
+        //         $json[$a]= ['title' => str_replace($titles,'"',''), 'hino' => str_replace( $matches[1],'"','') ];
+        //         dump("$titles $a/581");
+        //     } else {
+        //         echo "Div não encontrada ou conteúdo vazio.";
+        //     }
+        //     curl_close($ch);
+        // }
 
-        $arquivo = 'cantor_cristao.json';
-        $json = json_encode($json,JSON_UNESCAPED_UNICODE);
-        $file = fopen(__DIR__ . '/' . $arquivo,'w');
-        fwrite($file, $json);
-        fclose($file);
+        // $arquivo = 'cantor_cristao.json';
+        // $json = json_encode($json,JSON_UNESCAPED_UNICODE);
+        // $file = fopen(__DIR__ . '/' . $arquivo,'w');
+        // fwrite($file, $json);
+        // fclose($file);
         // $entities = [
         //     'igreja',
         //     'campanha',
